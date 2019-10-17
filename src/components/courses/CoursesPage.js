@@ -11,12 +11,12 @@ class CoursesPage extends Component {
         const { loadAuthors, loadCourses } = this.props.actions;
         const { courses, authors } = this.props;
 
-        if(courses === 0) {
+        if(courses.length === 0) {
             loadCourses()
                 .catch(err => alert('Loading Courses Failed' + err));
         }
 
-        if(authors) {
+        if(authors.length === 0) {
             loadAuthors()
                 .catch(err => alert('Loading Authors Failed' + err));
         }
@@ -48,7 +48,8 @@ function mapStateToProps(state) {
                         ...course,
                         authorName: state.authors.find(a => a.id === course.authorId).name
                     }
-        })
+        }),
+        authors: state.authors
     }
 }
 

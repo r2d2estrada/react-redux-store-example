@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 const CourseList = ({ courses }) => {
     return (
-        <table className='table'>
+        <table className='table table-striped'>
             <thead>
                 <tr>
                     <th />
@@ -19,7 +19,7 @@ const CourseList = ({ courses }) => {
                         return (
                             <tr key={course.id}>
                                 <td>
-                                    <a className='btn btm-light'
+                                    <a className='btn btn-light'
                                         href={`http://pluralsight.com/courses/${course.slug}`}
                                     >Watch</a>
                                 </td>
