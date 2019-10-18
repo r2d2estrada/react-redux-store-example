@@ -25,6 +25,8 @@ class ManageCoursePage extends Component {
         if (!category) errors.category = 'Category is required';
 
         this.setState({ errors });
+
+        return Object.keys(errors).length === 0;
     }
 
     handleChange = (event) => {
