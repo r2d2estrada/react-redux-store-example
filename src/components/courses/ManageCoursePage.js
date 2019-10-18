@@ -9,13 +9,13 @@ import { newCourse } from './../../../tools/mockData';
 class ManageCoursePage extends Component {
 
     state = {
-        course: {...this.props.course},
+        course: { ...this.props.course },
         errors: {}
     }
 
     handleChange = (event) => {
         const { name, value } = event.target;
-        let obj = {...this.state.course};
+        let obj = { ...this.state.course };
         obj[name] = name === 'authorId' ? parseInt(value, 10) : value;
         this.setState({ course: obj });
     }
@@ -26,32 +26,37 @@ class ManageCoursePage extends Component {
             this.props.history.push('/courses');
         });
     }
-    
+
     componentDidMount() {
         const { courses, authors, loadAuthors, loadCourses } = this.props;
 
-        if(courses.length === 0) {
+        if (courses.length === 0) {
             loadCourses()
                 .catch(err => console.log(err));
         }
 
-        if(authors.length === 0) {
+        if (authors.length === 0) {
             loadAuthors()
                 .catch(err => console.log(err));
         }
     }
-    
+
+    componentWillReceiveProps(nextProps) {
+        const { course } = nextProps;
+        this.setState({ course })
+    }
+
     render() {
         return (
             <div className='container mt-3'>
-                <CourseForm 
+                <CourseForm
                     course={this.state.course}
-                    errors={this.state.errors} 
+                    errors={this.state.errors}
                     authors={this.props.authors}
                     onChange={this.handleChange}
                     onSave={this.handleSubmit}
-                />  
-            </div> 
+                />
+            </div>
         );
     }
 }
@@ -72,9 +77,9 @@ function getCourseBySlug(courses, slug) {
 
 function mapStateToProps(state, ownProps) {
     const slug = ownProps.match.params.slug;
-    const course = 
+    const course =
         slug && state.courses.length > 0
-            ? getCourseBySlug(state.courses, slug) 
+            ? getCourseBySlug(state.courses, slug)
             : newCourse;
     return {
         course,
@@ -83,7 +88,7 @@ function mapStateToProps(state, ownProps) {
     }
 }
 
-const mapDispatchToProps = {       
+const mapDispatchToProps = {
     loadCourses,
     loadAuthors,
     saveCourse

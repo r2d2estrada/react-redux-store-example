@@ -12,7 +12,7 @@
       "title": "React: The Big Picture",
       "slug": "react-big-picture",
       "authorId": 1,
-      "category": "JavaScript"
+      "category": "JavaScript, React"
     },
     {
       "id": 3,
@@ -33,14 +33,14 @@
       "title": "Building Applications with React and Redux",
       "slug": "react-redux-react-router-es6",
       "authorId": 1,
-      "category": "JavaScript"
+      "category": "JavaScript, React, Redux, Store"
     },
     {
       "id": 6,
       "title": "Building Applications in React and Flux",
       "slug": "react-flux-building-applications",
       "authorId": 1,
-      "category": "JavaScript"
+      "category": "JavaScript, React, Flux, Store"
     },
     {
       "id": 7,
@@ -68,15 +68,7 @@
       "title": "Web Component Fundamentals",
       "slug": "web-components-shadow-dom",
       "authorId": 1,
-      "category": "HTML5"
-    },
-    {
-      "id": 11,
-      "title": "A New Course Test",
-      "authorId": 1,
-      "category": "React",
-      "createdAt": 1571357610607,
-      "slug": "a-new-course-test"
+      "category": "HTML5, Javascript, CSS3"
     }
   ],
   "authors": [
