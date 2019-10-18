@@ -6,10 +6,11 @@ import Header from './common/Header';
 import Courses from './courses/CoursesPage';
 import ManageCoursePage from './courses/ManageCoursePage';
 import NotFound from './NotFound';
+import { ToastContainer } from 'react-toastify';
 
 function App() {
     return (
-        <div className='conatiner-fluid'>
+        <div className='App'>
             <Header />
             <Switch>
                 <Route exact path='/' component={HomePage} />
@@ -19,8 +20,9 @@ function App() {
                 <Route path='/courses' component={Courses} />
                 <Route component={NotFound} />
             </Switch>
+            <ToastContainer autoClose={3000} hideProgressBar />
         </div>
-    ) 
+    )
 }
 
 export default App;

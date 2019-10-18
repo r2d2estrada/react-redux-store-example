@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import CourseList from './CourseList';
 import { Redirect } from 'react-router-dom';
+import Spinner from './../common/Spinner';
 
 class CoursesPage extends Component {
 
@@ -17,27 +18,38 @@ class CoursesPage extends Component {
         const { loadAuthors, loadCourses } = this.props.actions;
         const { courses, authors } = this.props;
 
-        if(courses.length === 0) {
+        if (courses.length === 0) {
             loadCourses()
                 .catch(err => alert('Loading Courses Failed' + err));
         }
 
-        if(authors.length === 0) {
+        if (authors.length === 0) {
             loadAuthors()
                 .catch(err => alert('Loading Authors Failed' + err));
         }
     }
-    
+
     render() {
         return (
             <>
-                {this.state.redirectToAddCoursePage && <Redirect to='/course' /> }
+                {this.state.redirectToAddCoursePage && <Redirect to='/course' />}
                 <div className='container mt-3'>
-                    <h2>Courses</h2><hr />
-                    <button className='btn btn-primary mb-3' 
-                        onClick={ () => this.setState( { redirectToAddCoursePage: true } ) }>Add Course
-                    </button>
-                    <CourseList courses={this.props.courses} />
+                    {
+                        this.props.loading ? (
+                            <Spinner />
+                        ) : (
+                                <>
+                                    <h2>Courses</h2>
+                                    <hr />
+                                    <button className='btn btn-primary mb-3'
+                                        onClick={
+                                            () => this.setState({ redirectToAddCoursePage: true })
+                                        }>Add Course
+                                    </button>
+                                    <CourseList courses={this.props.courses} />
+                                </>
+                            )
+                    }
                 </div>
             </>
         );
@@ -47,7 +59,8 @@ class CoursesPage extends Component {
 CoursesPage.propTypes = {
     courses: PropTypes.array.isRequired,
     authors: PropTypes.array.isRequired,
-    actions: PropTypes.object.isRequired
+    actions: PropTypes.object.isRequired,
+    loading: PropTypes.bool.isRequired
 };
 
 function mapStateToProps(state) {
@@ -60,8 +73,9 @@ function mapStateToProps(state) {
                         ...course,
                         authorName: state.authors.find(a => a.id === course.authorId).name
                     }
-        }),
-        authors: state.authors
+                }),
+        authors: state.authors,
+        loading: state.apiCallsInProgress > 0
     }
 }
 

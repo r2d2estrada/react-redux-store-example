@@ -5,12 +5,26 @@ import { loadAuthors } from './../../redux/actions/authorActions';
 import PropTypes from 'prop-types';
 import CourseForm from './CourseForm';
 import { newCourse } from './../../../tools/mockData';
+import Spinner from './../common/Spinner';
+import { toast } from 'react-toastify';
 
 class ManageCoursePage extends Component {
 
     state = {
         course: { ...this.props.course },
-        errors: {}
+        errors: {},
+        saving: false
+    }
+
+    formIsValid = () => {
+        const { title, authorId, category } = this.state.course;
+        const errors = {};
+
+        if (!title) errors.title = "Title is required";
+        if (!authorId) errors.authorId = 'Auhtor is required';
+        if (!category) errors.category = 'Category is required';
+
+        this.setState({ errors });
     }
 
     handleChange = (event) => {
@@ -22,9 +36,21 @@ class ManageCoursePage extends Component {
 
     handleSubmit = (event) => {
         event.preventDefault();
-        this.props.saveCourse(this.state.course).then(() => {
-            this.props.history.push('/courses');
-        });
+        if (!this.formIsValid()) return;
+        this.setState({ saving: true });
+        this.props.saveCourse(this.state.course)
+            .then(() => {
+                toast.success('Course saved');
+                this.props.history.push('/courses');
+            })
+            .catch(error => {
+                this.setState({
+                    saving: false,
+                    errors: {
+                        onSave: error.message
+                    }
+                });
+            });
     }
 
     componentDidMount() {
@@ -47,15 +73,26 @@ class ManageCoursePage extends Component {
     }
 
     render() {
+        const { courses, authors } = this.props;
+        const { course, errors, saving } = this.state;
+
         return (
             <div className='container mt-3'>
-                <CourseForm
-                    course={this.state.course}
-                    errors={this.state.errors}
-                    authors={this.props.authors}
-                    onChange={this.handleChange}
-                    onSave={this.handleSubmit}
-                />
+                {
+                    courses.length === 0 || authors.length === 0
+                        ? (
+                            <Spinner />
+                        ) : (
+                            <CourseForm
+                                course={course}
+                                errors={errors}
+                                authors={authors}
+                                onChange={this.handleChange}
+                                onSave={this.handleSubmit}
+                                saving={saving}
+                            />
+                        )
+                }
             </div>
         );
     }
