@@ -15,13 +15,13 @@ class CoursesPage extends Component {
         redirectToAddCoursePage: false
     };
 
-    handleDelete = (course) => {
-        toast.success('Course deleted');
-        this.props.actions
-            .deleteCourse(course)
-            .catch(() => {
-                toast.error('Delete Failed');
-            });
+    handleDelete = async (course) => {
+        try {
+            await this.props.actions.deleteCourse(course);
+            toast.success('Course Deleted')
+        } catch (err) {
+            toast.error('Delete Failed')
+        }
     }
 
     componentDidMount() {
@@ -42,25 +42,28 @@ class CoursesPage extends Component {
     render() {
         return (
             <>
-                {this.state.redirectToAddCoursePage && <Redirect to='/course' />}
+                { this.state.redirectToAddCoursePage && <Redirect to='/course' /> }
                 <div className='container mt-3'>
                     {
-                        this.props.loading ? (
+                        this.props.loading 
+                        ? (
                             <Spinner />
-                        ) : (
-                                <>
-                                    <h2>Courses</h2>
-                                    <hr />
-                                    <button className='btn btn-primary mb-3'
-                                        onClick={
-                                            () => this.setState({ redirectToAddCoursePage: true })
-                                        }>Add Course
-                                    </button>
-                                    <CourseList 
-                                        courses={this.props.courses}
-                                        onDeleteClick={this.handleDelete} />
-                                </>
-                            )
+                        ) 
+                        : (
+                            <>
+                                <h2>Courses</h2>
+                                <hr />
+                                <button className='btn btn-primary mb-3'
+                                    onClick={
+                                        () => this.setState({ redirectToAddCoursePage: true })
+                                    }>
+                                        Add Course
+                                </button>
+                                <CourseList 
+                                    courses={this.props.courses}
+                                    onDeleteClick={this.handleDelete} />
+                            </>
+                        )
                     }
                 </div>
             </>
